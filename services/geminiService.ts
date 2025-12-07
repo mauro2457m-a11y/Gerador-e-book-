@@ -2,15 +2,20 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { EbookStructure } from '../types';
 
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable not set.");
-}
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 const textModel = "gemini-3-pro-preview";
 const imageModel = "gemini-2.5-flash-image";
 
+function getAi() {
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) {
+        // Este erro será capturado pela UI e exibido de forma amigável.
+        throw new Error("A chave de API do Google não foi configurada. Verifique as configurações do ambiente.");
+    }
+    return new GoogleGenAI({ apiKey });
+}
+
 export async function generateEbookStructure(topic: string): Promise<EbookStructure> {
+  const ai = getAi();
   const prompt = `Aja como um especialista em marketing digital e criação de infoprodutos. Preciso que você crie a estrutura de um e-book sobre o tema: "${topic}".
   Sua resposta deve ser um JSON bem-formado.
   O JSON deve conter:
@@ -51,6 +56,7 @@ export async function generateEbookStructure(topic: string): Promise<EbookStruct
 }
 
 export async function generateChapterContent(topic: string, ebookTitle: string, chapterTitle: string): Promise<string> {
+  const ai = getAi();
   const prompt = `Você é um escritor especialista no tópico "${topic}".
   Escreva o conteúdo completo para o capítulo "${chapterTitle}" do e-book intitulado "${ebookTitle}".
   O conteúdo deve ser detalhado, bem explicado, prático e com pelo menos 500 palavras.
@@ -68,6 +74,7 @@ export async function generateChapterContent(topic: string, ebookTitle: string, 
 }
 
 export async function generateEbookCover(title: string, topic: string): Promise<string> {
+  const ai = getAi();
   const prompt = `Crie uma capa de e-book profissional e minimalista para um livro com o título "${title}" sobre "${topic}". O design deve ser moderno, atraente e limpo. Foco em gráficos abstratos e tipografia elegante. Não inclua nenhum texto na imagem. A imagem deve ser visualmente impactante e adequada para um produto digital.`;
 
   const response = await ai.models.generateContent({
@@ -82,11 +89,12 @@ export async function generateEbookCover(title: string, topic: string): Promise<
     }
   });
 
-  const firstPart = response.candidates?.[0]?.content?.parts?.[0];
-  if (firstPart && 'inlineData' in firstPart && firstPart.inlineData) {
-    const base64Data = firstPart.inlineData.data;
-    const mimeType = firstPart.inlineData.mimeType;
-    return `data:${mimeType};base64,${base64Data}`;
+  for (const part of response.candidates?.[0]?.content?.parts || []) {
+    if (part.inlineData) {
+      const base64Data = part.inlineData.data;
+      const mimeType = part.inlineData.mimeType;
+      return `data:${mimeType};base64,${base64Data}`;
+    }
   }
   
   throw new Error("Não foi possível gerar a imagem da capa do e-book.");

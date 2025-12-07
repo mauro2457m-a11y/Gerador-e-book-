@@ -61,14 +61,14 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-200 font-sans">
+    <div className="min-h-screen bg-neutral-900 text-neutral-200 font-sans">
       <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500 mb-4">
             Transforme sua Ideia em um Best-Seller Digital
           </h2>
-          <p className="text-gray-400 mb-8">
+          <p className="text-neutral-400 mb-8">
             Insira um tema lucrativo e nossa IA criará um e-book completo, com capa, título, descrição e 10 capítulos, pronto para você vender.
           </p>
           
@@ -78,7 +78,7 @@ const App: React.FC = () => {
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               placeholder="Ex: 'Investimentos para iniciantes'"
-              className="w-full flex-grow bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
+              className="w-full flex-grow bg-neutral-800 border border-neutral-700 text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
               disabled={isLoading}
             />
             <button

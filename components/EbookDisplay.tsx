@@ -12,10 +12,10 @@ const ChapterItem: React.FC<{ title: string; content: string; index: number }> =
   const [isOpen, setIsOpen] = useState(index === 0);
 
   return (
-    <div className="border border-gray-700 rounded-lg overflow-hidden">
+    <div className="border border-neutral-700 rounded-lg overflow-hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left p-4 bg-gray-800 hover:bg-gray-700 transition duration-200 flex justify-between items-center"
+        className="w-full text-left p-4 bg-neutral-800 hover:bg-neutral-700 transition duration-200 flex justify-between items-center"
       >
         <span className="font-semibold text-lg text-purple-300">Capítulo {index + 1}: {title}</span>
         <svg
@@ -33,7 +33,7 @@ const ChapterItem: React.FC<{ title: string; content: string; index: number }> =
           isOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="p-6 bg-gray-800/50 text-gray-300 whitespace-pre-wrap leading-relaxed">
+        <div className="p-6 bg-neutral-800/50 text-neutral-300 whitespace-pre-wrap leading-relaxed">
           {content}
         </div>
       </div>
@@ -106,14 +106,14 @@ const EbookDisplay: React.FC<EbookDisplayProps> = ({ ebook }) => {
   return (
     <>
       <div className="mt-12 max-w-4xl mx-auto animate-fade-in">
-        <div className="bg-gray-800/50 backdrop-blur-md rounded-xl shadow-2xl overflow-hidden p-6 md:p-8">
+        <div className="bg-neutral-800/50 backdrop-blur-md rounded-xl shadow-2xl overflow-hidden p-6 md:p-8">
           <div className="grid md:grid-cols-3 gap-8">
             <div className="md:col-span-1">
-              <div className="relative shadow-lg rounded-lg overflow-hidden aspect-[3/4] bg-gray-700 flex items-center justify-center">
+              <div className="relative shadow-lg rounded-lg overflow-hidden aspect-[3/4] bg-neutral-700 flex items-center justify-center">
                 {ebook.coverImageUrl ? (
                   <img src={ebook.coverImageUrl} alt={`Capa do e-book ${ebook.title}`} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="animate-pulse w-full h-full bg-gray-600"></div>
+                  <div className="animate-pulse w-full h-full bg-neutral-600"></div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <h2 className="absolute bottom-0 left-0 right-0 p-4 text-center text-xl font-bold text-white drop-shadow-lg">{ebook.title}</h2>
@@ -121,13 +121,13 @@ const EbookDisplay: React.FC<EbookDisplayProps> = ({ ebook }) => {
             </div>
             <div className="md:col-span-2">
               <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500 mb-4">{ebook.title}</h2>
-              <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">{ebook.description}</p>
+              <p className="text-neutral-300 leading-relaxed whitespace-pre-wrap">{ebook.description}</p>
             </div>
           </div>
           
           <div className="mt-12">
              <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
-                <h3 className="text-2xl font-bold text-gray-200">Conteúdo do E-book</h3>
+                <h3 className="text-2xl font-bold text-neutral-200">Conteúdo do E-book</h3>
                 {ebook.coverImageUrl && (
                     <button
                         onClick={handleDownload}
@@ -149,8 +149,8 @@ const EbookDisplay: React.FC<EbookDisplayProps> = ({ ebook }) => {
               ) : (
                 // Skeletons for chapters while loading
                 Array.from({ length: 10 }).map((_, index) => (
-                  <div key={index} className="border border-gray-700 rounded-lg p-4 bg-gray-800 animate-pulse h-[68px]">
-                     <div className="h-4 bg-gray-700 rounded w-3/4"></div>
+                  <div key={index} className="border border-neutral-700 rounded-lg p-4 bg-neutral-800 animate-pulse h-[68px]">
+                     <div className="h-4 bg-neutral-700 rounded w-3/4"></div>
                   </div>
                 ))
               )}
