@@ -5,17 +5,16 @@ import { EbookStructure } from '../types';
 const textModel = "gemini-3-pro-preview";
 const imageModel = "gemini-2.5-flash-image";
 
-function getAi() {
-    const apiKey = process.env.API_KEY;
-    if (!apiKey) {
-        // Este erro será capturado pela UI e exibido de forma amigável.
-        throw new Error("A chave de API do Google não foi configurada. Verifique as configurações do ambiente.");
+function getAi(apiKey?: string) {
+    const key = apiKey || process.env.API_KEY;
+    if (!key) {
+        throw new Error("A chave de API do Google não foi fornecida. Por favor, insira sua chave no campo indicado.");
     }
-    return new GoogleGenAI({ apiKey });
+    return new GoogleGenAI({ apiKey: key });
 }
 
-export async function generateEbookStructure(topic: string): Promise<EbookStructure> {
-  const ai = getAi();
+export async function generateEbookStructure(topic: string, apiKey?: string): Promise<EbookStructure> {
+  const ai = getAi(apiKey);
   const prompt = `Aja como um especialista em marketing digital e criação de infoprodutos. Preciso que você crie a estrutura de um e-book sobre o tema: "${topic}".
   Sua resposta deve ser um JSON bem-formado.
   O JSON deve conter:
@@ -55,8 +54,8 @@ export async function generateEbookStructure(topic: string): Promise<EbookStruct
   }
 }
 
-export async function generateChapterContent(topic: string, ebookTitle: string, chapterTitle: string): Promise<string> {
-  const ai = getAi();
+export async function generateChapterContent(topic: string, ebookTitle: string, chapterTitle: string, apiKey?: string): Promise<string> {
+  const ai = getAi(apiKey);
   const prompt = `Você é um escritor especialista no tópico "${topic}".
   Escreva o conteúdo completo para o capítulo "${chapterTitle}" do e-book intitulado "${ebookTitle}".
   O conteúdo deve ser detalhado, bem explicado, prático e com pelo menos 500 palavras.
@@ -73,8 +72,8 @@ export async function generateChapterContent(topic: string, ebookTitle: string, 
   throw new Error("Falha ao gerar o conteúdo do capítulo.");
 }
 
-export async function generateEbookCover(title: string, topic: string): Promise<string> {
-  const ai = getAi();
+export async function generateEbookCover(title: string, topic: string, apiKey?: string): Promise<string> {
+  const ai = getAi(apiKey);
   const prompt = `Crie uma capa de e-book profissional e minimalista para um livro com o título "${title}" sobre "${topic}". O design deve ser moderno, atraente e limpo. Foco em gráficos abstratos e tipografia elegante. Não inclua nenhum texto na imagem. A imagem deve ser visualmente impactante e adequada para um produto digital.`;
 
   const response = await ai.models.generateContent({
