@@ -1,8 +1,6 @@
+
 import React, { useState } from 'react';
 import { Ebook } from '../types';
-
-declare const jspdf: any;
-declare const html2canvas: any;
 
 interface EbookDisplayProps {
   ebook: Ebook;
@@ -56,6 +54,14 @@ const EbookDisplay: React.FC<EbookDisplayProps> = ({ ebook }) => {
     }
     
     try {
+        // Access html2canvas and jspdf from window safely
+        const html2canvas = (window as any).html2canvas;
+        const jspdf = (window as any).jspdf;
+
+        if (!html2canvas || !jspdf) {
+            throw new Error("Bibliotecas de PDF não carregadas. Verifique sua conexão.");
+        }
+
         const canvas = await html2canvas(printableElement, {
             scale: 2,
             useCORS: true,
@@ -98,6 +104,7 @@ const EbookDisplay: React.FC<EbookDisplayProps> = ({ ebook }) => {
 
     } catch (error) {
         console.error("Erro ao gerar PDF:", error);
+        alert("Ocorreu um erro ao gerar o PDF. Por favor, tente novamente.");
     } finally {
         setIsDownloading(false);
     }

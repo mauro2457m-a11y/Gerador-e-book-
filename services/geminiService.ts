@@ -6,7 +6,10 @@ const textModel = "gemini-3-pro-preview";
 const imageModel = "gemini-2.5-flash-image";
 
 function getAi(apiKey?: string) {
-    const key = apiKey || process.env.API_KEY;
+    // Verifica se apiKey foi passada, senão tenta pegar do ambiente de forma segura
+    const envKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : undefined;
+    const key = apiKey || envKey;
+    
     if (!key) {
         throw new Error("A chave de API do Google não foi fornecida. Por favor, insira sua chave no campo indicado.");
     }
